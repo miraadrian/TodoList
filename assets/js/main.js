@@ -14,6 +14,7 @@ function criaTarefa(textoInput){
 
     limpaTarefa();
     criaBotaoApagar(li);
+    salvarTarefas();
 }
 
 inputTarefa.addEventListener('keypress', function(e){
@@ -51,5 +52,33 @@ document.addEventListener('click', function(e){
     
     if(el.classList.contains('apagar-tarefa')){
         el.parentElement.remove();
+        salvarTarefas();
     }
 })
+
+function salvarTarefas() {
+    const liTarefas = tarefa.querySelectorAll('li');
+    const listaDeTarefas = [];
+
+    for (let tarefa of liTarefas){
+        let tarefaTexto = tarefa.innerText;
+        tarefaTexto = tarefaTexto.replace('Delete', ' ').trim();
+        listaDeTarefas.push(tarefaTexto);
+    }
+
+    const tarefasJSON = JSON.stringify(listaDeTarefas);
+    localStorage.setItem('tarefasA', tarefasJSON);
+
+}
+
+function adicionaTarefasSalvas(){
+    const tarefas = localStorage.getItem('tarefasA');
+
+    const listaDeTarefas = JSON.parse(tarefas);
+
+    for (let tarefa of listaDeTarefas){
+        criaTarefa(tarefa);
+    }
+}
+
+adicionaTarefasSalvas();

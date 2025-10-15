@@ -7,6 +7,15 @@ function criaLi (){
     return li;
 }
 
+function criaTarefa(textoInput){
+    const li = criaLi();
+    li.innerText = textoInput;
+    tarefa.appendChild(li);
+
+    limpaTarefa();
+    criaBotaoApagar(li);
+}
+
 inputTarefa.addEventListener('keypress', function(e){
     if(e.keyCode === 13){
         if(!inputTarefa.value) return;
@@ -21,12 +30,13 @@ function limpaTarefa(){
     inputTarefa.focus();
 }
 
-function criaTarefa(textoInput){
-    const li = criaLi();
-    li.innerText = textoInput;
-    tarefa.appendChild(li);
-
-    criaBotaoApagar();
+function criaBotaoApagar(li){
+    li.innerText += ' ';
+    const botaoApagar = document.createElement('button');
+    botaoApagar.innerText = 'Delete';
+    botaoApagar.setAttribute('class', 'apagar-tarefa');
+    botaoApagar.setAttribute('title', 'Delete this Task');
+    li.appendChild(botaoApagar);
 }
 
 btnTarefa.addEventListener('click', function(e){
@@ -36,10 +46,10 @@ btnTarefa.addEventListener('click', function(e){
     limpaTarefa();
 });
 
-
-function criaBotaoApagar(li){
-    li.innerText += ' ';
-    const btnApagar = document.createElement('button');
-    btnApagar.innerText = 'Apagar';
-    li.appendChild(btnApagar);
-}
+document.addEventListener('click', function(e){
+    const el = e.target;
+    
+    if(el.classList.contains('apagar-tarefa')){
+        el.parentElement.remove();
+    }
+})
